@@ -1,15 +1,17 @@
 package liliya.prova;
 
-import liliya.prova.entities.Drinks;
-import liliya.prova.entities.Menu;
-import liliya.prova.entities.Pizzas;
-import liliya.prova.entities.Toppings;
+import liliya.prova.entities.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
+@Setter
 @Configuration
 public class ConfigMenu {
     @Bean(name = "toppings_tomato")
@@ -38,6 +40,7 @@ public class ConfigMenu {
     }
 
     @Bean(name = "pizza_margherita")
+    @Primary
     public Pizzas pizzaMargheritaBean() {
         List<Toppings> tList = new ArrayList<>();
         tList.add(toppingTomatoBean());
@@ -73,17 +76,18 @@ public class ConfigMenu {
     @Bean(name = "menu")
     public Menu menuBean() {
         List<Pizzas> pizzas = new ArrayList<>();
-        List<Drinks> drinks = new ArrayList<>();
-        List<Toppings> toppings = new ArrayList<>();
+
+
 
         pizzas.add(pizzaMargheritaBean());
         pizzas.add(pizzaHawaiianBean());
 
-
+        List<Drinks> drinks = new ArrayList<>();
         drinks.add(lemonadeBean());
         drinks.add(waterBean());
         drinks.add(wineBean());
 
+        List<Toppings> toppings = new ArrayList<>();
         toppings.add(toppingTomatoBean());
         toppings.add(toppingCheeseBean());
         toppings.add(toppingSalamiBean());
@@ -94,4 +98,9 @@ public class ConfigMenu {
     }
 
 
+    @Bean("Tavolo1")
+     Tavolo getTavolo1(@Value("${coperto}") double coperto) {
+        System.out.println("Valore di coperto: " + coperto);
+        return new Tavolo(1, 5, StatoTavolo.LIBERO,coperto);
+    }
 }
